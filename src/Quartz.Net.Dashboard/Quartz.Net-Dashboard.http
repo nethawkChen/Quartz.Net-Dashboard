@@ -1,0 +1,6 @@
+@Quartz.Net.Dashboard_HostAddress = http://localhost:5224
+
+GET {{Quartz.Net.Dashboard_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
