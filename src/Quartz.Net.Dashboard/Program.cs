@@ -7,6 +7,7 @@ using Quartz.Net.Dashboard.Hubs;
 using Quartz.Net.Dashboard.Listener;
 using Quartz.Net.Dashboard.Schedule;
 using Quartz.Net.Dashboard.Lib;
+using Quartz.Net_Dashboard.JobImpl;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -83,20 +84,8 @@ try {
     builder.Services.AddSignalR();
     #endregion
 
-    //builder.Services.AddSingleton<JobDTL>();
     builder.Services.AddScoped<JobDTL>();
-
-
-    //#region 目前可執行但還有問題的代碼
-    //builder.Services.AddTransient<IJobListener, JobListener>();
-    //builder.Services.AddTransient<IQuartzScheduleService, QuartzScheduleService>();
-
-    //builder.Services.AddScoped<ScheduleHub>();
-    //builder.Services.AddSignalR();
-
-    //builder.Services.AddTransient<JobDTL>();
-    //#endregion
-
+    builder.Services.AddScoped<TbSampleSyncImpl>();
 
     var app = builder.Build();
 
