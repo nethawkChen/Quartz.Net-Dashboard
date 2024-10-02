@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿/*
+ * Description: SignalR Hub, 提供 SignalR 服務的方法
+ *      Author: Kevin Chen
+ * Create Date: 2024.06.01
+ */
 using Microsoft.AspNetCore.SignalR;
 using Quartz.Net.Dashboard.Lib;
 using Quartz.Net.Dashboard.Model;
@@ -117,17 +121,6 @@ namespace Quartz.Net.Dashboard.Hubs {
         }
 
         /// <summary>
-        /// 立即執行 job
-        /// </summary>
-        /// <param name="jobName"></param>
-        /// <param name="groupName"></param>
-        /// <returns></returns>
-        public async Task<ResponseModel<string>> ImmediatelyExecuteJob(string jobName, string groupName) {
-            JobKey jobKey = new JobKey(jobName, groupName);
-            return await _quartzService.ImmediatelyExecuteJob(jobKey);
-        }
-
-        /// <summary>
         /// 刪除 Job
         /// </summary>
         /// <param name="jobName"></param>
@@ -142,6 +135,10 @@ namespace Quartz.Net.Dashboard.Hubs {
                 _logger.LogInformation($"Delete Job Success: {jobName}:{groupName}");
                 
                 try {
+                    // JobDTL 是 Scoped：每個 HTTP 請求創建一次實例 或 Transient：每次請求都創建新的實例
+                    // ScheduleHub 是 Singleton：應用程式生命週期內只創建一次實例
+                    // 將 Scoped 服務注入到 Singleton 服務中時，會導致生命週期不匹配的問題。這是因為 Singleton 服務的生命週期比 Scoped 服務長，這可能會導致 Scoped 服務在其生命週期結束後仍被使用，從而引發錯誤
+                    // 所以不採用 JobDTL DI注入﹐改用動態解析 IServiceProvider
                     using (var scope = _serviceProvider.CreateScope()) {
                         var _jobDTL = scope.ServiceProvider.GetRequiredService<JobDTL>();
                         await _jobDTL.Update(jobName, groupName, "N");
@@ -161,7 +158,6 @@ namespace Quartz.Net.Dashboard.Hubs {
                 _logger.LogError(msg);
                 return result;
             }
-            //return await _quartzService.DeleteJob(jobKey);
         }
         #endregion
     }

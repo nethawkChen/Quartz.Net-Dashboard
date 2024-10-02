@@ -39,7 +39,6 @@ namespace Quartz.Net.Dashboard.Model {
             modelBuilder.Entity<TbSample>(entity => {
                 entity.ToTable("TbSample");
                 entity.HasKey(e => e.Id);
-                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.AgentId).HasMaxLength(20);
                 entity.Property(e => e.AgentName).HasMaxLength(50);
                 entity.Property(e => e.Gender).HasMaxLength(1);
@@ -72,7 +71,7 @@ namespace Quartz.Net.Dashboard.Model {
 
             modelBuilder.Entity<TbSampleSync>(entity => {
                 entity.ToTable("TbSampleSync");
-                entity.Property(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.AgentId).HasMaxLength(20);
                 entity.Property(e => e.AgentName).HasMaxLength(50);
                 entity.Property(e => e.Gender).HasMaxLength(1);

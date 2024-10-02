@@ -1,0 +1,48 @@
+/*呈現資料的表格*/
+#css_table {
+  display: table;
+  border: 1px solid #000;
+  background-color: #F0F8FF;
+  margin: 0 auto;
+
+  .css_tr {
+    display: table-row;
+    /*background-color: #F0F8FF;*/
+  }
+
+  .css_tb_title{
+    color:white;
+    font-weight: bold;
+    background-color: rgb(58, 58, 80);
+  }
+
+  .css_td {
+    display: table-cell;
+    border: 1px solid #000;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 1px;
+    padding-right: 1px;
+  }
+
+  .css_title {
+    text-align: center;
+    font-weight: bold;
+    background-color: #4682B4;
+    color: white;
+  }
+
+  .css_pager {
+    width: 30px;
+    text-align: center;
+    background-color: #4682B4;
+    color: white;
+  }
+
+  .css_field {
+    text-align: right;
+    font-weight: bold;
+    background-color: #4682B4;
+    color: white;
+  }
+}
