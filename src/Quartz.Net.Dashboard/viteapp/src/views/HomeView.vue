@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <img alt="Vite logo" src="../assets/vue.svg" />
-    <HelloWorld msg="Welcome to Your Vue|Vite App" />
+    <img alt="Vite logo" src="../assets/QuartzDashboard.svg" />
+    <HelloWorld msg="打造 Quartz.Net  Dashbaord" />
   </div>
 </template>
 

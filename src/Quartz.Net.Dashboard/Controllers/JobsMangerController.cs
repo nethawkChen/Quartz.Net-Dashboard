@@ -27,30 +27,30 @@ namespace Quartz.Net.Dashboard.Controllers {
             _jobDTL = jobDTL;
         }
 
-        #region Quartz Schedule 相關作業
-        /// <summary>
-        /// 啟動 Quartz Scheduler
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet, Route("Start")]
-        public async Task<IActionResult> Start() {
-            var scheduler = await _schedulerFactory.GetScheduler();
-            await scheduler.Start();
-            return Ok();
-        }
+        //#region Quartz Schedule 相關作業
+        ///// <summary>
+        ///// 啟動 Quartz Scheduler
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet, Route("Start")]
+        //public async Task<IActionResult> Start() {
+        //    var scheduler = await _schedulerFactory.GetScheduler();
+        //    await scheduler.Start();
+        //    return Ok();
+        //}
 
-        /// <summary>
-        /// 停止 Quartz Scheduler
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet, Route("Shutdown")]
-        public async Task<IActionResult> Shutdown() {
-            var scheduler = await _schedulerFactory.GetScheduler();
-            await scheduler.Shutdown();
+        ///// <summary>
+        ///// 停止 Quartz Scheduler
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet, Route("Shutdown")]
+        //public async Task<IActionResult> Shutdown() {
+        //    var scheduler = await _schedulerFactory.GetScheduler();
+        //    await scheduler.Shutdown();
 
-            return Ok();
-        }
-        #endregion
+        //    return Ok();
+        //}
+        //#endregion
 
         #region JobScheduleView.vue UI
         /// <summary>

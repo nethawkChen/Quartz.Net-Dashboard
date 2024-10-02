@@ -2,26 +2,6 @@
   <h1 class="disply-4">Quartz.Net Dashboard</h1>
 
   <div class="container">
-    <div class="row">
-      <div class="col">
-        <div class="input-group mb-3">
-          <span class="input-group-text">任務名稱</span>
-          <input type="text" class="form-control" v-model="queryParam.jobName" />
-        </div>
-      </div>
-      <div class="col">
-        <div class="input-group mb-3">
-          <span class="input-group-text">Group</span>
-          <input type="text" class="form-control" v-model="queryParam.group" />
-        </div>
-      </div>
-      <div class="col">
-        <button class="btn btn-primary">查詢</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="container">
     <div class="col-md-12">
       <div id="css_table" style="width: 100%">
         <div class="css_tr css_title">
