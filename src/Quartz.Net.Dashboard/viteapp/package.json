@@ -1,0 +1,28 @@
+{
+  "name": "viteapp",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "dev:devlocal": "vite --mode devlocal",
+    "build:devlocal": "vite build --mode devlocal",
+    "preview:devlocal": "vite preview --mode devlocal"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.4.0",
+    "bootstrap": "^5.3.0",
+    "sass": "^1.78.0",
+    "vue": "^3.4.37",
+    "vue-router": "^4.4.3"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^6.6.0",
+    "@vitejs/plugin-vue": "^5.1.2",
+    "vite": "^5.4.1"
+  }
+}
