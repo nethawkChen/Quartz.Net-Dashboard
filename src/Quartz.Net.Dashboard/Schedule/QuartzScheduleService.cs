@@ -1,11 +1,9 @@
 ﻿/*
  *   IQuartzScheduleService 介面實作
  */
-using Microsoft.AspNetCore.Http.HttpResults;
 using Newtonsoft.Json;
 using Quartz.Impl.Matchers;
 using Quartz.Impl.Triggers;
-using Quartz.Net.Dashboard.Lib;
 using Quartz.Net.Dashboard.Model;
 using Quartz.Net.Dashboard.Model.Dto;
 
@@ -85,53 +83,6 @@ namespace Quartz.Net.Dashboard.Schedule {
         }
 
         #region 將任務加入排程中
-        /// <summary>
-        /// 新加入的任務, 加入 Quartz.Net 持久化資料庫中開始排程
-        /// </summary>
-        /// <returns></returns>
-        public async Task<ResponseModel<string>> AddSchedule() {
-            try {
-                // JobDTL 是 Scoped：每個 HTTP 請求創建一次實例 或 Transient：每次請求都創建新的實例
-                // QuartzScheduleService 是 Singleton：應用程式生命週期內只創建一次實例
-                // 將 Scoped 服務注入到 Singleton 服務中時，會導致生命週期不匹配的問題。這是因為 Singleton 服務的生命週期比 Scoped 服務長，這可能會導致 Scoped 服務在其生命週期結束後仍被使用，從而引發錯誤
-                // 所以不採用 DI注入﹐改用動態解析 IServiceProvider 
-                using (var scope = _serviceProvider.CreateScope()) {
-                    var _jobDTL=scope.ServiceProvider.GetRequiredService<JobDTL>();
-
-                    var jobInfos = (await _jobDTL.GetJobInfos()).Where(x => x.JobStatus == "Y").ToList();
-                    var scheduler = await _schedulerFactory.GetScheduler();
-                    foreach (var item in jobInfos) {
-                        // 以 JobKey 檢查 Job 是否已經存在於持久化資料庫中
-                        JobKey jobKey = new JobKey(item.JobName, item.JobGroup);
-
-                        if (await scheduler.CheckExists(jobKey)) {
-                            continue;
-                        } else {
-                            JobInfo jobinfo = new JobInfo() {
-                                Id = item.Id,
-                                JobName = item.JobName,
-                                JobGroup = item.JobGroup,
-                                JobType = Type.GetType(item.JobTypeName),
-                                JobDesc = item.JobDesc,
-                                ScheduleExpression = item.ScheduleExpression,
-                                ScheduleExpressionDesc = item.ScheduleExpressionDesc,
-                                JobStatus = item.JobStatus
-                            };
-                            await scheduler.ScheduleJob(CreateJobDetail(jobinfo), CreateTrigger(jobinfo));
-                        }
-                    }
-
-                    return new ResponseModel<string>();
-                }
-            } catch(Exception er) {
-                return new ResponseModel<string>() {
-                    Code = "99",
-                    Message = $"QuartzScheduleService.AddSchedule error!---{er.Message}",
-                    Data = null
-                };
-            }
-        }
-
         /// <summary>
         /// 加入任務到排程
         /// </summary>
@@ -219,31 +170,6 @@ namespace Quartz.Net.Dashboard.Schedule {
                 responseModel.Message = errMsg;
             }
 
-            return responseModel;
-        }
-
-        /// <summary>
-        /// 立刻執行 Job
-        /// </summary>
-        /// <param name="jobKey"></param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public async Task<ResponseModel<string>> ImmediatelyExecuteJob(JobKey jobKey) {
-            ResponseModel<string> responseModel = new ResponseModel<string>();
-            string errMsg = string.Empty;
-            string jobString = $"Job Group={jobKey.Group},Name={jobKey.Name}";
-            try {
-                var scheduler = await _schedulerFactory.GetScheduler();
-                await scheduler.TriggerJob(jobKey);
-
-                responseModel.Code = "200";
-                responseModel.Data = "Success";
-                _logger.LogInformation($"{jobString} 立刻執行成功");
-            } catch (Exception er) {
-                errMsg = $"{jobString} 立刻執行失敗!--[{er.Message}]";
-                responseModel.Code = "99";
-                responseModel.Message = errMsg;
-            }
             return responseModel;
         }
 
